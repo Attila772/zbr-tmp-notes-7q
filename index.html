@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ptuj vasúton</title>
+<meta name="description" content="Autó nélküli útikalauz Ptujhoz: a város története, látnivalói, termálfürdő, szőlőhegyek, vonattal Veszprémből és tovább Mariborba, Celjébe, Ljubljanába.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: egy olvasható oszlop; a fejléc teljes szélességű panorámafotó, utána fejezetek az utazás sorrendjében, a látnivalók kép + szöveg sorokban */
+:root{
+  --bg:#f3f5f4;--surface:#ffffff;--ink:#1d2a2a;--muted:#556463;--line:#d5dddb;
+  --drava:#2f6f6d;--roof:#b5462c;--vine:#6b7a2e;
+  --display:"Literata", Georgia, "Times New Roman", serif;
+  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#141b1b;--surface:#1c2525;--ink:#e6ecea;--muted:#a3b2b0;--line:#2e3b3a;
+  --drava:#6fb3ae;--roof:#e07a5c;--vine:#b4c46c;color-scheme:dark}}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.wrap{max-width:52rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 4rem}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.2;margin:0}
+h2{font-size:1.9rem;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0}
+a{color:var(--drava);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--roof);outline-offset:2px;border-radius:2px}
+
+/* Fejléc fotó */
+.hero{position:relative;color:#fff;background:#24302f}
+.hero img{width:100%;height:clamp(18rem,52vw,32rem);object-fit:cover;object-position:center 60%}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,20,0) 35%,rgba(10,20,20,.72) 100%)}
+.hero .text{position:absolute;left:0;right:0;bottom:0;padding-block:1.5rem 1.6rem}
+.hero .inner{max-width:52rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:.4rem}
+.eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.hero .eyebrow{color:#f3c9b8}
+.hero h1{font-size:clamp(3rem,10vw,5rem);font-weight:700;letter-spacing:-.01em;text-shadow:0 2px 18px rgba(0,0,0,.35)}
+
+.intro{padding-top:1.6rem;display:grid;gap:1rem}
+.lede{font-size:1.18rem;max-width:40rem}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;font-size:.95rem;color:var(--muted)}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+nav.toc{display:flex;flex-wrap:wrap;gap:.4rem}
+nav.toc a{font-size:.9rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--surface);padding:.3rem .75rem;border-radius:99px}
+nav.toc a:hover{border-color:var(--drava)}
+
+section{padding-top:3.2rem;display:grid;gap:1.1rem}
+.chap{display:flex;align-items:baseline;gap:.8rem}
+.chap span{font-family:var(--display);color:var(--roof);font-size:1.1rem;font-variant-numeric:tabular-nums}
+section > p{max-width:42rem}
+
+/* Galéria */
+.gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem}
+.gallery figure{margin:0;position:relative;overflow:hidden;border-radius:8px;background:var(--line)}
+.gallery img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;transition:transform .5s ease}
+.gallery figure:hover img{transform:scale(1.03)}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:.9rem .7rem .5rem;font-size:.85rem;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6))}
+.g-wide{grid-column:span 4}
+.g-tall{grid-column:span 2;grid-row:span 2}
+.g-tall img{aspect-ratio:auto}
+.g-third{grid-column:span 2}
+@media (max-width:640px){
+  .gallery{grid-template-columns:1fr 1fr}
+  .g-wide{grid-column:span 2}.g-tall{grid-column:span 1;grid-row:span 1}.g-tall img{aspect-ratio:4/3}.g-third{grid-column:span 1}
+}
+@media (prefers-reduced-motion:reduce){.gallery img{transition:none}}
+
+/* Történet */
+.history{display:grid;grid-template-columns:1fr 15rem;gap:1.5rem;align-items:start}
+.history > div{min-width:0}
+.history figure{margin:0;display:grid;gap:.6rem}
+.history figure img{border-radius:8px}
+.history figcaption{font-size:.82rem;color:var(--muted)}
+@media (max-width:640px){.history{grid-template-columns:1fr}.history figure{grid-template-columns:1fr 1fr}}
+.timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:.4rem}
+.timeline li{display:grid;grid-template-columns:6.5rem 1fr;gap:1rem;padding:.6rem 0 .6rem 1rem;position:relative}
+.timeline li::before{content:"";position:absolute;left:-6px;top:1.05rem;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--drava)}
+.timeline .yr{font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums;color:var(--drava)}
+.timeline li > div{min-width:0}
+
+/* Látnivalók */
+.sights{display:grid;gap:1.6rem}
+.sight{display:grid;grid-template-columns:15rem 1fr;gap:1.2rem;padding-bottom:1.6rem;border-bottom:1px solid var(--line);align-items:start}
+.sight:last-child{border-bottom:0;padding-bottom:0}
+.sight.noimg{grid-template-columns:1fr}
+.sight > img{border-radius:8px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.sight .body{display:grid;gap:.4rem;min-width:0}
+.sight .meta{display:flex;flex-wrap:wrap;gap:.4rem;font-size:.82rem}
+.tag{padding:.1rem .55rem;border-radius:99px;background:color-mix(in srgb,var(--drava) 12%,transparent);color:var(--drava);font-weight:500}
+.tag.walk{background:color-mix(in srgb,var(--vine) 16%,transparent);color:var(--vine)}
+.tag.warn{background:color-mix(in srgb,var(--roof) 13%,transparent);color:var(--roof)}
+.sight .links{font-size:.92rem;display:flex;flex-wrap:wrap;gap:.3rem 1rem}
+@media (max-width:640px){.sight{grid-template-columns:1fr}}
+
+/* Vasút */
+.route{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.2rem;display:grid;gap:1rem}
+.stops{list-style:none;margin:0;padding:0;display:grid;gap:.15rem}
+.stops li{display:grid;grid-template-columns:1.2rem 1fr;gap:.6rem;align-items:center;font-size:.98rem}
+.stops li i{width:10px;height:10px;border-radius:50%;border:2px solid var(--muted);justify-self:center}
+.stops li.key i{background:var(--roof);border-color:var(--roof);width:14px;height:14px}
+.stops li.key{font-weight:600}
+.stops li.small{color:var(--muted);font-size:.88rem}
+.note{font-size:.92rem;color:var(--muted);border-left:3px solid var(--roof);padding-left:.8rem}
+.links{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.92rem}
+
+/* Kirándulások */
+.trips{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem}
+.trip{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+.trip img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.trip .body{padding:.9rem 1rem 1rem;display:grid;gap:.35rem;align-content:start}
+.trip .time{font-size:.85rem;color:var(--drava);font-weight:600;font-variant-numeric:tabular-nums}
+.trip p{font-size:.95rem}
+@media (max-width:720px){.trips{grid-template-columns:1fr}}
+
+.ljstrip{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.ljstrip figure{margin:0}
+.ljstrip img{border-radius:8px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.ljstrip figcaption{font-size:.82rem;color:var(--muted);padding-top:.3rem}
+.day{display:grid;gap:.6rem;list-style:none;margin:0;padding:0}
+.day li{display:grid;grid-template-columns:5.2rem 1fr;gap:.8rem}
+.day .when{font-family:var(--display);font-weight:600;color:var(--drava)}
+.day li > div{min-width:0}
+@media (max-width:480px){.timeline li,.day li{grid-template-columns:1fr;gap:.1rem}}
+
+footer{margin-top:3.5rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);display:grid;gap:.6rem}
+footer ul{margin:0;padding-left:1.1rem;columns:2 18rem;column-gap:2rem}
+footer li{break-inside:avoid;margin-bottom:.15rem}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ptuj_panorama%2C_Slovenia_%282024%29.jpg/1920px-Ptuj_panorama%2C_Slovenia_%282024%29.jpg" alt="Ptuj panorámája a várral, az óvárossal és a Drávával" fetchpriority="high">
+  <div class="shade"></div>
+  <div class="text"><div class="inner">
+    <div class="eyebrow">Szlovénia · Dráva-part · vonattal elérhető</div>
+    <h1>Ptuj</h1>
+  </div></div>
+</header>
+
+<div class="wrap">
+
+<div class="intro">
+  <p class="lede">Szlovénia legrégebbi városa egy dombon álló várral, piros tetős óvárossal, termálfürdővel és szőlőhegyekkel. Minden fontos dolog gyalog bejárható, autó nem kell hozzá.</p>
+  <div class="facts">
+    <span>Lakosok: <b>~23 000</b></span>
+    <span>Római neve: <b>Poetovio</b></span>
+    <span>Termálvíz: <b>56 °C</b>, 1100 m mélyről</span>
+    <span>Vonattal Veszprémből: <b>átszállás nélkül</b></span>
+  </div>
+  <nav class="toc" aria-label="Tartalom">
+    <a href="#kepek">Képek</a><a href="#tortenet">Története</a><a href="#latnivalok">Látnivalók</a><a href="#kozelben">A közelben</a><a href="#odajutas">Veszprémből</a><a href="#kirandulas">Vonatos kirándulások</a>
+  </nav>
+</div>
+
+<section id="kepek">
+  <div class="chap"><span>1</span><h2>A város képekben</h2></div>
+  <p>Ptuj a Dráva bal partján fekszik. A vár a dombtetőn áll, alatta sűrűn sorakoznak a piros tetős házak, a folyón túl pedig a szőlőhegyek kezdődnek.</p>
+  <div class="gallery">
+    <figure class="g-wide"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/View_of_Ptuj_Castle_01.jpg/1280px-View_of_Ptuj_Castle_01.jpg" alt="A ptuji vár a város fölött"><figcaption>A vár a város fölött</figcaption></figure>
+    <figure class="g-tall"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Minorite_Monastery_of_Ptuj.jpg/1280px-Minorite_Monastery_of_Ptuj.jpg" alt="A ptuji minorita kolostor"><figcaption>Minorita kolostor</figcaption></figure>
+    <figure class="g-third"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Ptuj_panorama_z_desnega_brega_Drave_1.jpg/1280px-Ptuj_panorama_z_desnega_brega_Drave_1.jpg" alt="Ptuj a Dráva túlpartjáról"><figcaption>A Dráva túlpartjáról</figcaption></figure>
+    <figure class="g-third"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Ptuj_Town_Hall.jpg/1280px-Ptuj_Town_Hall.jpg" alt="A ptuji városháza"><figcaption>Városháza, Mestni trg</figcaption></figure>
+    <figure class="g-third"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ptuj_Castle_%281%29.jpg/1280px-Ptuj_Castle_%281%29.jpg" alt="A ptuji vár"><figcaption>A vár közelről</figcaption></figure>
+    <figure class="g-third"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Ptuj_panorama_01.jpg/1280px-Ptuj_panorama_01.jpg" alt="Ptuj látképe"><figcaption>Látkép</figcaption></figure>
+    <figure class="g-third"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/PtujskoJezero1.JPG/1280px-PtujskoJezero1.JPG" alt="A Ptuji-tó"><figcaption>Ptuji-tó</figcaption></figure>
+  </div>
+</section>
+
+<section id="tortenet">
+  <div class="chap"><span>2</span><h2>A város története</h2></div>
+  <div class="history">
+    <div>
+      <p style="margin-bottom:1rem">Ptuj a mai Szlovénia legrégebbi írásban említett városa. A rómaiak idején fontos katonai és kereskedőváros volt, a középkorban a salzburgi érsekek birtokolták, a 20. század közepéig pedig osztrák főúri családoké volt a vár.</p>
+      <ol class="timeline">
+        <li><span class="yr">i. e. 5. ezr.</span><div>Már az újkőkorban laktak a vár dombján, ahonnan messzire látni a síkságra.</div></li>
+        <li><span class="yr">i. sz. 69</span><div>A római <b>Poetovio</b> első írásos említése. A város a Dráva-átkelőnél virágzott, Mithrász-szentélyei ma is megvannak.</div></li>
+        <li><span class="yr">1132</span><div>A salzburgi érsekek a ptuji urakra bízzák a várat, akik több mint 300 évig igazgatják a várost.</div></li>
+        <li><span class="yr">1239</span><div>A minorita szerzetesek pincét építenek a kolostoruk alá, ebből lett a mai Ptuji Borpince.</div></li>
+        <li><span class="yr">1656–1802</span><div>A vár a skót eredetű Leslie család kezében van.</div></li>
+        <li><span class="yr">1873–1945</span><div>Az utolsó tulajdonosok, a Herberstein grófok. Utánuk a vár berendezésével együtt múzeum lett.</div></li>
+        <li><span class="yr">ma</span><div>A <b>Kurentovanje</b> farsang, a bundás, csengős kurent-maszkokkal, Szlovénia legismertebb népi ünnepe, minden év februárjában.</div></li>
+      </ol>
+    </div>
+    <figure>
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/49/Postcard_of_Ptuj_1968.jpg" alt="Ptuj egy 1968-as képeslapon">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Kurenti_na_Ptuju.jpg/1280px-Kurenti_na_Ptuju.jpg" alt="Kurentek a ptuji farsangon">
+      <figcaption>Ptuj egy 1968-as képeslapon, és kurentek a farsangon.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="latnivalok">
+  <div class="chap"><span>3</span><h2>Látnivalók a városban</h2></div>
+  <div class="sights">
+
+    <article class="sight noimg">
+      <div class="body">
+        <h3>Terme Ptuj termálfürdő</h3>
+        <div class="meta"><span class="tag walk">kb. 15–20 perc séta a központból</span><span class="tag">egész évben nyitva</span></div>
+        <p>A gyógyvíz 1100 m mélyről, 56 °C-on tör fel, és főleg izom- és ízületi panaszokra ajánlják. Hét fedett és hét kültéri medence van, hullámmedence, lassú „folyó”, szaunavilág, nyáron csúszdapark. A központból a Dráva-parti sétányon lehet kényelmesen kisétálni. A fürdő saját fotói a hivatalos oldalon láthatók.</p>
+        <div class="links"><a href="https://visitptuj.eu/en/see-do/relaxation-recreation/wellness-recreation/thermal-park-terme-ptuj/" target="_blank" rel="noopener">Bemutató (visitptuj.eu)</a><a href="https://www.sava-hotels-resorts.com/en/terme-ptuj/services-and-experiences/thermal-park-and-hotel-pools/thermal-park-terme-ptuj/" target="_blank" rel="noopener">Hivatalos oldal, képek, árak, nyitvatartás</a></div>
+      </div>
+    </article>
+
+    <article class="sight">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ptuj_Castle_%287%29.jpg/1280px-Ptuj_Castle_%287%29.jpg" alt="A ptuji vár">
+      <div class="body">
+        <h3>A ptuji vár és a Regionális Múzeum</h3>
+        <div class="meta"><span class="tag warn">rövid, meredek feljáró</span><span class="tag">hétfőn zárva</span><span class="tag">2–3 óra</span></div>
+        <p>Berendezett kastélytermek, faliszőnyegek, több mint 500 darabos fegyvergyűjtemény, Szlovénia legnagyobb régi hangszer-gyűjteménye és a farsangi kurent-maszkok. A várfalról nyílik a legszebb kilátás a tetőkre és a Drávára. A legrövidebb út a Grajska ulicán és egy fedett falépcsőn át vezet fel.</p>
+        <div class="links"><a href="https://visitptuj.eu/en/see-do/culture-heritage/sightseeing/ptuj-castle/" target="_blank" rel="noopener">A vár (visitptuj.eu)</a><a href="https://visitptuj.eu/en/see-do/culture-heritage/art-culture/ptuj-ormoz-regional-museum/" target="_blank" rel="noopener">A múzeum gyűjteményei</a></div>
+      </div>
+    </article>
+
+    <article class="sight">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Ptuj%2C_Orpheus_monument_03.jpg/1280px-Ptuj%2C_Orpheus_monument_03.jpg" alt="Az Orpheus-emlékmű a Slovenski trgen">
+      <div class="body">
+        <h3>Óvárosi séta: terek, tornyok, kolostorok</h3>
+        <div class="meta"><span class="tag walk">sík, gyalogos utcák</span><span class="tag">ingyenes</span></div>
+        <p>A <b>Slovenski trg</b> a városi toronnyal, a Szent György-templommal és az <b>Orpheus-emlékművel</b>. Ez egy 2. századi római sírkő, amelyet a középkorban pellengérnek használtak. A <b>Mestni trg</b> a városházával, a 13. századi <b>minorita</b> és <b>domonkos kolostor</b>, és a Dráva-parti sétány. Itt működik Szlovénia legrégebbi, ma is működő mozija is.</p>
+        <div class="links"><a href="https://www.visitptuj.eu/en/see-do/tours/themed-adventures/the-mysterious-middle-ages/" target="_blank" rel="noopener">Középkori séta</a><a href="https://visitptuj.eu/en/see-do/tours/themed-adventures/an-old-town-yet-young-at-heart/" target="_blank" rel="noopener">Galériák, kávézók, kultúra</a></div>
+      </div>
+    </article>
+
+    <article class="sight noimg">
+      <div class="body">
+        <h3>Ptuji Borpince (Ptujska klet)</h3>
+        <div class="meta"><span class="tag walk">az óvárosban</span><span class="tag warn">csak előzetes bejelentkezéssel</span></div>
+        <p>Szlovénia legrégebbi borpincéje, kilométernyi föld alatti folyosóval a város alatt. Itt őrzik az 1917-es Zlata trta („Arany szőlőtő”) bort, amelyet a legrégebbi szlovén bornak tartanak. A vezetett túra végén kóstoló van. A pince borait a Pullus boltban is meg lehet venni, a Vinarski trg 1. alatt.</p>
+        <div class="links"><a href="https://visitptuj.eu/en/eat-drink/wine-cellars-bars-2/ptuj-wine-cellar/" target="_blank" rel="noopener">Bemutató és foglalás</a><a href="https://www.ptujska-klet.si/en/experiences/" target="_blank" rel="noopener">Túrák a pince oldalán</a></div>
+      </div>
+    </article>
+
+    <article class="sight">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/3/34/Haloze150808.jpg" alt="Szőlőhegyek Halozéban">
+      <div class="body">
+        <h3>Szőlőhegyek és borkóstoló túrák</h3>
+        <div class="meta"><span class="tag">a szervező visz és hoz</span></div>
+        <p>A Dráván túl kezdődik Haloze és a Štajerska borvidék, meredek, teraszos szőlőkkel. Autó nélkül a legegyszerűbb egy szervezett túra. Ezek a ptuji pincétől indulnak, kisbusszal viszik ki a résztvevőket a szőlőkbe, ott családi birtokon ebédelnek, aztán visszahozzák őket.</p>
+        <div class="links"><a href="https://www.winetourism.com/local-wine-guide-experiences/the-stajerska-slovenia-winelover-s-dream/" target="_blank" rel="noopener">Pince + szőlőtúra ebéddel</a></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="kozelben">
+  <div class="chap"><span>4</span><h2>Mit lehet csinálni a közelben</h2></div>
+  <div class="sights">
+    <article class="sight">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Ptujsko_jezero_z_obiskovalci.jpg/1280px-Ptujsko_jezero_z_obiskovalci.jpg" alt="Sétálók a Ptuji-tó partján">
+      <div class="body">
+        <h3>Ptuji-tó (Ptujsko jezero)</h3>
+        <div class="meta"><span class="tag walk">gyalog vagy biciklivel</span></div>
+        <p>Szlovénia egyik legnagyobb mesterséges tava, közvetlenül a város mellett, a Dráván. Fürdeni nem lehet benne, de a parti séta, a kerékpározás és a madárlesés nagyon kellemes. Lehet kenuzni és SUP-ozni is. Biciklit a turisztikai irodában (TIC, Slovenski trg) érdemes kérdezni.</p>
+      </div>
+    </article>
+    <article class="sight">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/PtujskaGora1.jpg/1280px-PtujskaGora1.jpg" alt="Ptujska Gora és a bazilika">
+      <div class="body">
+        <h3>Ptujska Gora bazilika</h3>
+        <div class="meta"><span class="tag">kb. 13 km, helyi busz vagy taxi</span></div>
+        <p>Domb tetején álló, 15. századi gótikus zarándoktemplom, Szlovénia egyik legszebb gótikus épülete. A híres Védőköpenyes Mária-domborművön sok korabeli alak látható. Félnapos kirándulásnak ideális.</p>
+        <div class="links"><a href="https://visitptuj.eu/?p=1844589" target="_blank" rel="noopener">Séta Ptujska Gorán (visitptuj.eu)</a></div>
+      </div>
+    </article>
+    <article class="sight">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Korant_Ptuj_01.jpg/1280px-Korant_Ptuj_01.jpg" alt="Kurent maszk a ptuji farsangon">
+      <div class="body">
+        <h3>Rendezvények</h3>
+        <div class="meta"><span class="tag">évről évre</span></div>
+        <p>Február: Kurentovanje farsang. Augusztus eleje: <i>Ptujska poletna noč</i>, amikor az óváros minden tere zenés helyszín lesz. November 11.: Márton-nap újborral. December: adventi vásár. A pontos dátumokat a visitptuj.eu eseménynaptárában érdemes megnézni.</p>
+        <div class="links"><a href="https://visitptuj.eu/en/" target="_blank" rel="noopener">visitptuj.eu</a></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="odajutas">
+  <div class="chap"><span>5</span><h2>Veszprémből vasúttal</h2></div>
+  <p>A <b>Citadella InterCity</b> naponta közlekedik Budapest és Ljubljana között, és Veszprémben is megáll. Ptujig nem kell átszállni, egyszerűen ülve maradnak.</p>
+  <div class="route">
+    <ol class="stops" aria-label="A Citadella főbb megállói">
+      <li class="small"><i></i>Budapest, Székesfehérvár</li>
+      <li class="key"><i></i>Veszprém (felszállás)</li>
+      <li class="small"><i></i>Boba, Zalaegerszeg</li>
+      <li class="small"><i></i>Hodoš, határ</li>
+      <li class="small"><i></i>Murska Sobota, Ormož</li>
+      <li class="key"><i></i>Ptuj (leszállás)</li>
+      <li class="small"><i></i>tovább: Pragersko, Celje, Ljubljana</li>
+    </ol>
+    <p class="note">Az út nagyjából 4,5–5 óra. Indulás előtt érdemes a pontos menetrendet a MÁV-nál ellenőrizni, mert nyáron előfordulhat pályafelújítás miatti pótlóbusz. A ptuji állomástól a központ kb. 10 perc séta.</p>
+    <div class="links">
+      <a href="https://jegy.mav.hu/" target="_blank" rel="noopener">MÁV jegyvásárlás és menetrend</a>
+      <a href="https://potniski.sz.si/en/" target="_blank" rel="noopener">Szlovén vasút (SŽ) menetrend</a>
+    </div>
+  </div>
+</section>
+
+<section id="kirandulas">
+  <div class="chap"><span>6</span><h2>Ptujból vonattal tovább</h2></div>
+  <p>Ptuj jó kiindulópont egynapos vonatos kirándulásokhoz. A menetidők hozzávetőlegesek, egyes vonatoknál Pragerskóban át kell szállni.</p>
+  <div class="trips">
+    <article class="trip">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Maribor%2C_Lent_in_the_afternoon.jpg/1280px-Maribor%2C_Lent_in_the_afternoon.jpg" alt="Maribor, a Lent negyed a Dráva partján">
+      <div class="body"><h3>Maribor</h3><span class="time">kb. 40–60 perc</span><p>A Drávára néző Lent negyed, a világ legöregebb szőlőtőkéje (több mint 400 éves), hangulatos főtér. A legkényelmesebb fél- vagy egynapos kirándulás.</p></div>
+    </article>
+    <article class="trip">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Celjski_grad_s_Pe%C4%8Dovnika.jpg/1280px-Celjski_grad_s_Pe%C4%8Dovnika.jpg" alt="A celjei vár a dombon">
+      <div class="body"><h3>Celje</h3><span class="time">kb. 1 óra</span><p>A Cillei grófok óriási vára a város fölött, nagyon szép kilátással. A várhoz fel kell kapaszkodni, vagy taxival lehet felmenni.</p></div>
+    </article>
+    <article class="trip">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Triple_Bridge_and_Preseren_Square_fron_the_Ljubljanica.jpg/1280px-Triple_Bridge_and_Preseren_Square_fron_the_Ljubljanica.jpg" alt="Ljubljana, a Hármas híd és a Prešeren tér">
+      <div class="body"><h3>Ljubljana</h3><span class="time">kb. 2,5 óra</span><p>A főváros. Hosszú nap, de a Citadellával átszállás nélkül megjárható. Lent egy javasolt napi program.</p></div>
+    </article>
+  </div>
+
+  <h3 style="margin-top:1rem">Egy nap Ljubljanában</h3>
+  <div class="ljstrip">
+    <figure><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Ljubljana_Central_Market%2C_view_from_Ljubljana_Castle.jpg/1280px-Ljubljana_Central_Market%2C_view_from_Ljubljana_Castle.jpg" alt="A ljubljanai Központi Piac a várból nézve"><figcaption>A Központi Piac a várból nézve</figcaption></figure>
+    <figure><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Ljubljana_Castle_Funicular%2C_20240502_1715_7705.jpg/1280px-Ljubljana_Castle_Funicular%2C_20240502_1715_7705.jpg" alt="A ljubljanai vár siklója"><figcaption>Sikló a várba</figcaption></figure>
+  </div>
+  <ol class="day">
+    <li><span class="when">Délelőtt</span><div>Az állomásról kb. 10–15 perc séta a központba. Prešeren tér, Hármas híd, majd a Plečnik tervezte <b>Központi Piac</b> az oszlopsoros árkádokkal.</div></li>
+    <li><span class="when">Dél</span><div>Ebéd a Ljubljanica-parti teraszok egyikén. Péntekenként a piac melletti téren tavasztól őszig az <i>Odprta kuhna</i> utcai ételpiac működik.</div></li>
+    <li><span class="when">Délután</span><div><b>Sikló a várba</b>, így gyaloglás nélkül fel lehet jutni. Fentről az egész város és a hegyek látszanak. Lefelé a <b>Sárkány-híd</b> felé érdemes menni.</div></li>
+    <li><span class="when">Késő délután</span><div>Hajókázás a Ljubljanicán, vagy pihenés a <b>Tivoli parkban</b>. Utána vissza az állomásra.</div></li>
+  </ol>
+  <p class="note">A Citadella egy irányban naponta egyszer jár. Ljubljanából Ptujra egyéb szlovén vonatokkal is vissza lehet jutni, ezeket a fenti SŽ-menetrendben érdemes előre kinézni.</p>
+</section>
+
+<footer>
+  <span>Források: visitptuj.eu, Sava Hotels &amp; Resorts, Ptujska klet, MÁV, Szlovén Vasutak. Árak, nyitvatartás és menetrend változhat, indulás előtt érdemes ellenőrizni.</span>
+  <span>Fotók: Wikimedia Commons, szabad licencekkel:</span>
+  <ul>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj_panorama,_Slovenia_(2024).jpg">Ptuj panoráma</a> – Petar Milošević, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:View_of_Ptuj_Castle_01.jpg">A vár a város fölött</a> – Krzysztof Golik, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj_Castle_(1).jpg">A vár közelről</a> – Krzysztof Golik, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj_Castle_(7).jpg">Ptuji vár</a> – Krzysztof Golik, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Minorite_Monastery_of_Ptuj.jpg">Minorita kolostor</a> – Viktar Palstsiuk, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj_panorama_z_desnega_brega_Drave_1.jpg">A Dráva túlpartjáról</a> – Eleassar, CC BY-SA 3.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj_Town_Hall.jpg">Városháza</a> – Sl-Ziga, közkincs</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj_panorama_01.jpg">Látkép</a> – Mihael Grmek, CC BY-SA 3.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:PtujskoJezero1.JPG">Ptuji-tó</a> – Sl-Ziga, közkincs</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptujsko_jezero_z_obiskovalci.jpg">Ptuji-tó, sétálók</a> – Dibko, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Postcard_of_Ptuj_1968.jpg">Képeslap, 1968</a> – ismeretlen, közkincs</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Kurenti_na_Ptuju.jpg">Kurentek</a> – Andrejj, CC BY-SA 3.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Korant_Ptuj_01.jpg">Kurent maszk</a> – Clemens Stockner, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ptuj,_Orpheus_monument_03.jpg">Orpheus-emlékmű</a> – Ajznponar, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Haloze150808.jpg">Haloze</a> – Alasdair Green, közkincs</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:PtujskaGora1.jpg">Ptujska Gora</a> – Sl-Ziga, közkincs</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Maribor,_Lent_in_the_afternoon.jpg">Maribor, Lent</a> – VlaDexa, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Celjski_grad_s_Pe%C4%8Dovnika.jpg">Celjei vár</a> – Smihael, CC BY-SA 3.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Triple_Bridge_and_Preseren_Square_fron_the_Ljubljanica.jpg">Ljubljana, Hármas híd</a> – Valerio2468, CC BY-SA 4.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ljubljana_Central_Market,_view_from_Ljubljana_Castle.jpg">Ljubljana, Központi Piac</a> – Ajznponar, CC0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Ljubljana_Castle_Funicular,_20240502_1715_7705.jpg">Ljubljana, sikló</a> – Jakub Hałun, CC BY 4.0</li>
+  </ul>
+  <span>Ptuji turisztikai iroda (TIC): Slovenski trg, az óváros közepén.</span>
+</footer>
+
+</div>
+</body>
+</html>
